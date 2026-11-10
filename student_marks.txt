@@ -1,0 +1,12 @@
+101,Aarav,Mathematics,85
+101,Aarav,DataStructures,78
+101,Aarav,BigDataAnalytics,92
+102,Kavya,Mathematics,64
+102,Kavya,DataStructures,71
+102,Kavya,BigDataAnalytics,69
+103,Rohan,Mathematics,45
+103,Rohan,DataStructures,52
+103,Rohan,BigDataAnalytics,47
+104,Megha,Mathematics,91
+104,Megha,DataStructures,88
+104,Megha,BigDataAnalytics,94

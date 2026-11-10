@@ -1,0 +1,16 @@
+StudentID,Name,Subject,Marks
+101,Rahul,Math,85
+102,Priya,Math,92
+103,Amit,Math,35
+104,Neha,Math,78
+105,Ravi,Math,60
+101,Rahul,Physics,75
+102,Priya,Physics,88
+103,Amit,Physics,42
+104,Neha,Physics,95
+105,Ravi,Physics,30
+101,Rahul,Computer,90
+102,Priya,Computer,96
+103,Amit,Computer,55
+104,Neha,Computer,80
+105,Ravi,Computer,35

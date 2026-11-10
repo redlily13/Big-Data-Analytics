@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hadoop MapReduce - Student Examination Marks Analysis</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 2rem; line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .title-group h1 { font-size: 1.6rem; color: var(--accent); margin-bottom: 0.25rem; }
+        .title-group p { color: var(--muted); font-size: 0.95rem; }
+        .badge-group { text-align: right; font-size: 0.9rem; color: var(--text); background: #0f172a; padding: 0.75rem 1.25rem; border-radius: 8px; border: 1px solid var(--border); }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .card h2 { font-size: 1.15rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.92rem; }
+        th, td { padding: 0.75rem 0.85rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: #0f172a; color: var(--accent); font-weight: 600; }
+        .grade-a { color: var(--success); font-weight: 700; }
+        .grade-b { color: var(--accent); font-weight: 700; }
+        .grade-c { color: var(--warning); font-weight: 700; }
+        .terminal {
+            background: #090d16;
+            color: #a7f3d0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.88rem;
+            overflow-x: auto;
+            white-space: pre;
+            margin-top: 0.75rem;
+        }
+        .bar-container { margin-top: 1rem; }
+        .bar-row { margin-bottom: 1rem; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.35rem; }
+        .bar-bg { background: #0f172a; height: 24px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+        .bar-fill { background: linear-gradient(90deg, #0284c7, #38bdf8); height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.8rem; font-weight: bold; color: #0f172a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-group">
+                <h1>Apache Hadoop MapReduce: Student Examination Marks Analysis</h1>
+                <p>Big Data Analytics (CA-1) | Distributed Batch Aggregation & Subject Performance Dashboard</p>
+            </div>
+            <div class="badge-group">
+                <div><strong>Student Name:</strong> Ahana Mallick</div>
+                <div><strong>Roll No:</strong> 30001223024 | <strong>Reg No:</strong> 233001010498</div>
+                <div><strong>Program:</strong> BCA | <strong>Hadoop:</strong> v3.4.1</div>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>1. Subject-Wise Hadoop Streaming Output (student_marks_results.csv)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Students Evaluated</th>
+                        <th>Average Marks (%)</th>
+                        <th>Highest Mark</th>
+                        <th>Lowest Mark</th>
+                        <th>Passed (&ge;40)</th>
+                        <th>Failed (&lt;40)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Computer</strong></td>
+                        <td>5</td>
+                        <td>71.20</td>
+                        <td>96</td>
+                        <td>35</td>
+                        <td class="grade-a">4</td>
+                        <td style="color: var(--danger); font-weight:700;">1</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Math</strong></td>
+                        <td>5</td>
+                        <td>70.00</td>
+                        <td>92</td>
+                        <td>35</td>
+                        <td class="grade-a">4</td>
+                        <td style="color: var(--danger); font-weight:700;">1</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Physics</strong></td>
+                        <td>5</td>
+                        <td>66.00</td>
+                        <td>95</td>
+                        <td>30</td>
+                        <td class="grade-a">4</td>
+                        <td style="color: var(--danger); font-weight:700;">1</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="bar-container">
+                <div class="bar-row">
+                    <div class="bar-label"><span>Computer</span><span>71.20%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 71.2%;">71.20</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label"><span>Math</span><span>70.00%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 70.0%;">70.00</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label"><span>Physics</span><span>66.00%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 66.0%;">66.00</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>2. Student-Wise Java MapReduce Output (StudentMarksAnalysis.java)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Key</th>
+                        <th>Subjects Evaluated</th>
+                        <th>Subject Scores</th>
+                        <th>Total Marks (300)</th>
+                        <th>Average (%)</th>
+                        <th>Final Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>101 - Aarav</strong></td>
+                        <td>3</td>
+                        <td>85, 78, 92</td>
+                        <td>255</td>
+                        <td>85.00%</td>
+                        <td class="grade-a">A</td>
+                    </tr>
+                    <tr>
+                        <td><strong>102 - Kavya</strong></td>
+                        <td>3</td>
+                        <td>64, 71, 69</td>
+                        <td>204</td>
+                        <td>68.00%</td>
+                        <td class="grade-b">B</td>
+                    </tr>
+                    <tr>
+                        <td><strong>103 - Rohan</strong></td>
+                        <td>3</td>
+                        <td>45, 52, 47</td>
+                        <td>144</td>
+                        <td>48.00%</td>
+                        <td class="grade-c">C</td>
+                    </tr>
+                    <tr>
+                        <td><strong>104 - Megha</strong></td>
+                        <td>3</td>
+                        <td>91, 88, 94</td>
+                        <td>273</td>
+                        <td>91.00%</td>
+                        <td class="grade-a">A</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>3. HDFS & Hadoop Execution Terminal Output</h2>
+            <div class="terminal">$ hadoop jar student_marks.jar StudentMarksAnalysis /user/hadoop/marks_input /user/hadoop/marks_output
+2026-11-11 00:15:22 INFO mapreduce.Job: Running job: job_local18492041_0001
+2026-11-11 00:15:23 INFO mapreduce.Job:  map 100% reduce 100%
+2026-11-11 00:15:23 INFO mapreduce.Job: Job job_local18492041_0001 completed successfully
+Return code: 0
+
+$ hdfs dfs -cat /user/hadoop/marks_output/part-r-00000
+101 - Aarav	Total: 255 | Avg: 85.00% | Grade: A
+102 - Kavya	Total: 204 | Avg: 68.00% | Grade: B
+103 - Rohan	Total: 144 | Avg: 48.00% | Grade: C
+104 - Megha	Total: 273 | Avg: 91.00% | Grade: A
+
+$ cat /content/marks_output/part-00000
+Computer	5	71.20	96	35	4	1
+Math	5	70.00	92	35	4	1
+Physics	5	66.00	95	30	4	1</div>
+        </div>
+    </div>
+</body>
+</html>
